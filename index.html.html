@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tartaglia Construction | West Bloomfield, MI</title>
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary: #1e1e1e;
+            --accent: #ff9900; 
+            --silver: #c0c0c0;
+            --light: #f9f9f9;
+            --white: #ffffff;
+            --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-main); line-height: 1.6; color: var(--primary); overflow-x: hidden; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 0.5rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 12px;
+        }
+
+        .main-logo {
+            height: 70px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo-text-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-name {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+
+        .logo-sub {
+            font-size: 0.7rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+        
+        nav ul { display: flex; list-style: none; align-items: center; }
+        nav ul li { margin-left: 2rem; }
+        nav ul li a { text-decoration: none; color: var(--primary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; transition: var(--transition); }
+        nav ul li a:hover { color: var(--accent); }
+        
+        .nav-phone { 
+            background: var(--primary);
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 700; 
+            margin-left: 2rem; 
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .nav-phone:hover { background: var(--accent); }
+
+        /* --- HERO --- */
+        #home {
+            height: 100vh;
+            position: relative;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: var(--white); text-align: center; padding: 0 10%;
+            overflow: hidden;
+        }
+
+        .hero-slideshow {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            animation: slideShow 25s linear infinite;
+        }
+
+        .slide:nth-child(1) { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('building image 1.jpg'); animation-delay: 0s; }
+        .slide:nth-child(2) { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('building image 2.jpg'); animation-delay: 5s; }
+        .slide:nth-child(3) { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('building image 3.jpg'); animation-delay: 10s; }
+        .slide:nth-child(4) { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('building image 4.jpg'); animation-delay: 15s; }
+        .slide:nth-child(5) { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('building image 5.jpg'); animation-delay: 20s; }
+
+        @keyframes slideShow {
+            0% { opacity: 0; }
+            5% { opacity: 1; }
+            20% { opacity: 1; }
+            25% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        .hero-content { position: relative; z-index: 2; width: 100%; }
+        #home h1 { font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1.1; margin-bottom: 1.5rem; text-transform: uppercase; font-weight: 800; }
+        
+        .btn { 
+            display: inline-block; padding: 1.2rem 3rem; background: var(--accent); color: var(--white); 
+            text-decoration: none; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; 
+            transition: var(--transition); border: 2px solid var(--accent); 
+        }
+        .btn:hover { background: transparent; color: var(--white); border-color: var(--white); }
+
+        /* --- SECTIONS --- */
+        section { padding: 120px 10%; }
+        .section-title { font-size: 2.5rem; margin-bottom: 3rem; position: relative; text-transform: uppercase; font-weight: 800; }
+        .section-title::after { content: ''; position: absolute; bottom: -10px; left: 0; width: 60px; height: 5px; background: var(--accent); }
+
+        /* --- SERVICES --- */
+        #services { background: var(--light); }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; }
+        .service-card { background: var(--white); padding: 3rem; border-left: 5px solid var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+
+        /* --- WORK PORTFOLIO --- */
+        .work-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+            gap: 1.5rem; 
+        }
+        .work-item { position: relative; height: 400px; overflow: hidden; background: #000; }
+        .work-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: transform 0.8s ease; }
+        .work-info { position: absolute; bottom: 30px; left: 30px; color: var(--white); z-index: 2; }
+        .work-item:hover img { transform: scale(1.1); opacity: 0.4; }
+
+        /* --- CONTACT --- */
+        .contact-container { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; }
+        input, textarea { width: 100%; padding: 1rem; margin-bottom: 1rem; border: 1px solid #ddd; outline-color: var(--accent); }
+        .mail-link { color: var(--accent); text-decoration: none; font-weight: bold; }
+        .mail-link:hover { text-decoration: underline; }
+
+        /* --- FOOTER --- */
+        footer { background: #111; color: var(--white); padding: 80px 10% 40px; text-align: center; }
+        .footer-logo { height: 100px; margin-bottom: 20px; }
+        .footer-address { color: var(--silver); margin: 1rem 0; }
+        .copy { font-size: 0.8rem; color: #555; margin-top: 40px; border-top: 1px solid #222; padding-top: 20px; }
+
+        @media (max-width: 900px) {
+            .contact-container, .work-grid { grid-template-columns: 1fr; }
+            nav ul, .nav-phone { display: none; }
+            .main-logo { height: 50px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#home" class="logo-container">
+            <img src="Tartaglia Const Logo.jpg" alt="Tartaglia Construction Logo" class="main-logo">
+            <div class="logo-text-group">
+                <span class="logo-name">Tartaglia</span>
+                <span class="logo-sub">Construction</span>
+            </div>
+        </a>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#work">Portfolio</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a href="tel:248-770-8894" class="nav-phone">248-770-8894</a>
+    </nav>
+
+    <header id="home">
+        <div class="hero-slideshow">
+            <div class="slide"></div>
+            <div class="slide"></div>
+            <div class="slide"></div>
+            <div class="slide"></div>
+            <div class="slide"></div>
+        </div>
+        <div class="hero-content">
+            <h1>Excellence In Every Square Foot.</h1>
+            <p style="font-size: 1.4rem; margin: 0 auto 2rem; max-width: 800px; font-weight: 300; text-align: center;">
+                Leading Southeast Michigan with premium commercial construction and specialized interior build-outs.
+            </p>
+            <a href="#work" class="btn">Explore Portfolio</a>
+        </div>
+    </header>
+
+    <section id="services">
+        <h2 class="section-title">Our Expertise</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Pre-Construction</h3>
+                <p>Precise estimation, site analysis, and value engineering to ensure project viability from day one.</p>
+            </div>
+            <div class="service-card">
+                <h3>General Contracting</h3>
+                <p>Management of every phase of construction with a focus on safety, quality, and aggressive timelines.</p>
+            </div>
+            <div class="service-card">
+                <h3>Interior Build-Outs</h3>
+                <p>Specializing in build-outs for the restaurant, retail, office and industrial settings.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="work">
+        <h2 class="section-title">Project Gallery</h2>
+        <div class="work-grid">
+            <div class="work-item">
+                <img src="5 Mile Levan.webp" alt="5 / Levan Center">
+                <div class="work-info">
+                    <h3>5 / Levan Center</h3>
+                    <p>Livonia, MI</p>
+                </div>
+            </div>
+            <div class="work-item">
+                <img src="Fountains of Macomb Outlot with Parlor Doughnuts sign.jpg" alt="Parlor Doughnuts">
+                <div class="work-info">
+                    <h3>Macomb Township Outlot</h3>
+                    <p>Macomb, MI</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="contact-container">
+            <div>
+                <h2 class="section-title">Get In Touch</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 2rem;">Ready to build? Our team is standing by to bring your vision to life.</p>
+                <p><strong>Headquarters:</strong><br>7408 Verona Drive<br>West Bloomfield, Michigan 48322</p>
+                <p style="margin-top: 1rem;"><strong>Phone:</strong> <a href="tel:248-770-8894" style="color: var(--accent); text-decoration: none;">248-770-8894</a></p>
+                <p><strong>Email:</strong> <a href="mailto:BZadir@gmail.com" class="mail-link">BZadir@gmail.com</a></p>
+            </div>
+            <form>
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email Address" required>
+                <textarea rows="5" placeholder="Project Details"></textarea>
+                <button type="submit" class="btn" style="border: none; cursor: pointer; width: 100%;">Send Inquiry</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <img src="Tartaglia Const Logo.jpg" alt="Tartaglia Logo" class="footer-logo">
+        <h2 style="text-transform: uppercase; letter-spacing: 2px;">Tartaglia Construction</h2>
+        <p class="footer-address">7408 Verona Drive, West Bloomfield, MI 48322</p>
+        <p style="color: var(--accent); font-weight: bold;">248-770-8894</p>
+        <p style="margin-top: 0.5rem;"><a href="mailto:BZadir@gmail.com" style="color: var(--silver); text-decoration: none;">BZadir@gmail.com</a></p>
+        <p class="copy">© 2026 Tartaglia Construction. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
