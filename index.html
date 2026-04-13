@@ -154,8 +154,17 @@
         /* --- CONTACT --- */
         .contact-container { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; }
         input, textarea { width: 100%; padding: 1rem; margin-bottom: 1rem; border: 1px solid #ddd; outline-color: var(--accent); }
-        .mail-link { color: var(--accent); text-decoration: none; font-weight: bold; }
-        .mail-link:hover { text-decoration: underline; }
+        
+        #form-status {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #e7f3ef;
+            color: #2d5a4c;
+            border-radius: 4px;
+            font-weight: bold;
+            text-align: center;
+        }
 
         /* --- FOOTER --- */
         footer { background: #111; color: var(--white); padding: 80px 10% 40px; text-align: center; }
@@ -249,15 +258,19 @@
             <div>
                 <h2 class="section-title">Get In Touch</h2>
                 <p style="font-size: 1.2rem; margin-bottom: 2rem;">Ready to build? Our team is standing by to bring your vision to life.</p>
-                <p><strong>Headquarters:</strong><br>7408 Verona Drive<br>West Bloomfield, Michigan 48322</p>
+                <p><strong>Headquarters:</strong><br>West Bloomfield, Michigan 48322</p>
                 <p style="margin-top: 1rem;"><strong>Phone:</strong> <a href="tel:248-770-8894" style="color: var(--accent); text-decoration: none;">248-770-8894</a></p>
-                <p><strong>Email:</strong> <a href="mailto:BZadir@gmail.com" class="mail-link">BZadir@gmail.com</a></p>
             </div>
-            <form>
-                <input type="text" placeholder="Full Name" required>
-                <input type="email" placeholder="Email Address" required>
-                <textarea rows="5" placeholder="Project Details"></textarea>
+            <form id="construction-form" action="https://formsubmit.co/ajax/1b062f0c22365fadd95bcdd725177612" method="POST">
+                <input type="text" name="_honeypot" style="display:none">
+                
+                <input type="hidden" name="_captcha" value="false">
+
+                <input type="text" name="name" placeholder="Full Name" required>
+                <input type="email" name="email" placeholder="Email Address" required>
+                <textarea name="message" rows="5" placeholder="Project Details" required></textarea>
                 <button type="submit" class="btn" style="border: none; cursor: pointer; width: 100%;">Send Inquiry</button>
+                <div id="form-status">Thanks! Your message has been sent successfully.</div>
             </form>
         </div>
     </section>
@@ -265,11 +278,48 @@
     <footer>
         <img src="Tartaglia Const Logo.jpg" alt="Tartaglia Logo" class="footer-logo">
         <h2 style="text-transform: uppercase; letter-spacing: 2px;">Tartaglia Construction</h2>
-        <p class="footer-address">7408 Verona Drive, West Bloomfield, MI 48322</p>
+        <p class="footer-address">West Bloomfield, MI 48322</p>
         <p style="color: var(--accent); font-weight: bold;">248-770-8894</p>
-        <p style="margin-top: 0.5rem;"><a href="mailto:BZadir@gmail.com" style="color: var(--silver); text-decoration: none;">BZadir@gmail.com</a></p>
         <p class="copy">© 2026 Tartaglia Construction. All rights reserved.</p>
     </footer>
+
+    <script>
+        const form = document.getElementById('construction-form');
+        const status = document.getElementById('form-status');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(form);
+            const object = Object.fromEntries(formData);
+            const json = JSON.stringify(object);
+
+            status.innerHTML = "Sending...";
+            status.style.display = "block";
+
+            fetch("https://formsubmit.co/ajax/1b062f0c22365fadd95bcdd725177612", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: json
+            })
+            .then(async (response) => {
+                let res = await response.json();
+                if (response.status == 200) {
+                    status.innerHTML = "Thanks! Your message has been sent successfully.";
+                    form.reset();
+                } else {
+                    status.innerHTML = "Something went wrong. Please try again.";
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                status.innerHTML = "Something went wrong. Please try again.";
+            });
+        });
+    </script>
 
 </body>
 </html>
