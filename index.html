@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tartaglia Construction | West Bloomfield, MI</title>
+    <title>Tartaglia Construction | Southeast Michigan</title>
     <style>
         /* --- CSS VARIABLES & RESET --- */
         :root {
@@ -143,12 +143,12 @@
         /* --- WORK PORTFOLIO --- */
         .work-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
             gap: 1.5rem; 
         }
-        .work-item { position: relative; height: 400px; overflow: hidden; background: #000; }
+        .work-item { position: relative; height: 350px; overflow: hidden; background: #000; }
         .work-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: transform 0.8s ease; }
-        .work-info { position: absolute; bottom: 30px; left: 30px; color: var(--white); z-index: 2; }
+        .work-info { position: absolute; bottom: 20px; left: 20px; color: var(--white); z-index: 2; }
         .work-item:hover img { transform: scale(1.1); opacity: 0.4; }
 
         /* --- CONTACT --- */
@@ -172,10 +172,51 @@
         .footer-address { color: var(--silver); margin: 1rem 0; }
         .copy { font-size: 0.8rem; color: #555; margin-top: 40px; border-top: 1px solid #222; padding-top: 20px; }
 
+        /* --- CHATBOT WIDGET STYLES --- */
+        #chatbot-container { position: fixed; bottom: 20px; right: 20px; z-index: 2000; }
+        #chat-toggle-btn {
+            width: 60px; height: 60px;
+            background: var(--accent);
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.3s ease;
+        }
+        #chat-toggle-btn:hover { transform: scale(1.1); }
+        #chat-window {
+            display: none;
+            width: 350px; height: 450px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            flex-direction: column;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+        }
+        #chat-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            font-weight: bold; text-transform: uppercase; font-size: 0.8rem;
+        }
+        #chat-header button { background: transparent; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        #chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #fdfdfd; }
+        .chat-msg { padding: 10px 14px; border-radius: 10px; font-size: 0.85rem; line-height: 1.4; max-width: 85%; }
+        .bot-msg { background: #f0f0f0; color: #333; align-self: flex-start; }
+        .user-msg { background: var(--accent); color: white; align-self: flex-end; }
+        #chat-input-area { display: flex; padding: 10px; border-top: 1px solid #eee; }
+        #chat-input-area input { flex: 1; border: 1px solid #ddd; padding: 8px; border-radius: 4px; margin-bottom: 0; outline: none; }
+        #chat-send { background: var(--primary); color: white; border: none; padding: 0 15px; margin-left: 5px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+
         @media (max-width: 900px) {
             .contact-container, .work-grid { grid-template-columns: 1fr; }
             nav ul, .nav-phone { display: none; }
             .main-logo { height: 50px; }
+            #chat-window { width: 300px; height: 400px; }
         }
     </style>
 </head>
@@ -244,10 +285,17 @@
                 </div>
             </div>
             <div class="work-item">
-                <img src="Fountains of Macomb Outlot with Parlor Doughnuts sign.jpg" alt="Parlor Doughnuts">
+                <img src="Fountains-of-Macomb Outlot.jpg" alt="Macomb Township Outlot">
                 <div class="work-info">
                     <h3>Macomb Township Outlot</h3>
                     <p>Macomb, MI</p>
+                </div>
+            </div>
+            <div class="work-item">
+                <img src="Ryan and 13 Warren Building Remodel.jpg" alt="Ryan and 13 Mile">
+                <div class="work-info">
+                    <h3>Ryan and 13 Mile</h3>
+                    <p>Warren, MI</p>
                 </div>
             </div>
         </div>
@@ -263,9 +311,7 @@
             </div>
             <form id="construction-form" action="https://formsubmit.co/ajax/1b062f0c22365fadd95bcdd725177612" method="POST">
                 <input type="text" name="_honeypot" style="display:none">
-                
                 <input type="hidden" name="_captcha" value="false">
-
                 <input type="text" name="name" placeholder="Full Name" required>
                 <input type="email" name="email" placeholder="Email Address" required>
                 <textarea name="message" rows="5" placeholder="Project Details" required></textarea>
@@ -283,43 +329,77 @@
         <p class="copy">© 2026 Tartaglia Construction. All rights reserved.</p>
     </footer>
 
+    <div id="chatbot-container">
+        <div id="chat-window">
+            <div id="chat-header">
+                <span>TAGs Assistant</span>
+                <button onclick="toggleChat()">×</button>
+            </div>
+            <div id="chat-messages">
+                <div class="chat-msg bot-msg">Hey! I'm TAGs, your Construction AI assistant. How can I help you today?</div>
+            </div>
+            <div id="chat-input-area">
+                <input type="text" id="chat-input" placeholder="Ask TAGs...">
+                <button id="chat-send">Send</button>
+            </div>
+        </div>
+        <button id="chat-toggle-btn">
+            <svg viewBox="0 0 24 24" width="28" height="28"><path fill="white" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+        </button>
+    </div>
+
     <script>
+        // --- Contact Form Logic ---
         const form = document.getElementById('construction-form');
         const status = document.getElementById('form-status');
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            
             const formData = new FormData(form);
             const object = Object.fromEntries(formData);
-            const json = JSON.stringify(object);
-
-            status.innerHTML = "Sending...";
-            status.style.display = "block";
-
+            status.innerHTML = "Sending..."; status.style.display = "block";
             fetch("https://formsubmit.co/ajax/1b062f0c22365fadd95bcdd725177612", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
-                },
-                body: json
-            })
-            .then(async (response) => {
-                let res = await response.json();
+                headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                body: JSON.stringify(object)
+            }).then(response => {
                 if (response.status == 200) {
                     status.innerHTML = "Thanks! Your message has been sent successfully.";
                     form.reset();
-                } else {
-                    status.innerHTML = "Something went wrong. Please try again.";
-                }
-            })
-            .catch(error => {
-                console.log(error);
-                status.innerHTML = "Something went wrong. Please try again.";
+                } else { status.innerHTML = "Something went wrong. Please try again."; }
             });
         });
-    </script>
 
+        // --- Chatbot Logic ---
+        const chatAPIKey = "YOUR_GEMINI_API_KEY_HERE"; 
+        function toggleChat() {
+            const win = document.getElementById('chat-window');
+            win.style.display = (win.style.display === 'none' || win.style.display === '') ? 'flex' : 'none';
+        }
+        document.getElementById('chat-toggle-btn').addEventListener('click', toggleChat);
+
+        document.getElementById('chat-send').addEventListener('click', async () => {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if(!text) return;
+            addMsg(text, 'user-msg'); input.value = '';
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${chatAPIKey}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: text }] }] })
+                });
+                const data = await response.json();
+                addMsg(data.candidates[0].content.parts[0].text, 'bot-msg');
+            } catch (e) { addMsg("Sorry, I'm offline right now.", 'bot-msg'); }
+        });
+
+        function addMsg(text, cls) {
+            const container = document.getElementById('chat-messages');
+            const d = document.createElement('div');
+            d.className = `chat-msg ${cls}`; d.innerText = text;
+            container.appendChild(d); container.scrollTop = container.scrollHeight;
+        }
+    </script>
 </body>
 </html>
